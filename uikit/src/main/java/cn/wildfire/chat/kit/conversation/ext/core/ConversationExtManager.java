@@ -8,15 +8,15 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.wildfire.chat.kit.conversation.ext.ExampleAudioInputExt;
-import cn.wildfire.chat.kit.conversation.ext.FileExt;
 import cn.wildfire.chat.kit.conversation.ext.ImageExt;
-import cn.wildfire.chat.kit.conversation.ext.LocationExt;
 import cn.wildfire.chat.kit.conversation.ext.ShootExt;
-import cn.wildfire.chat.kit.conversation.ext.UserCardExt;
 import cn.wildfire.chat.kit.conversation.ext.VoipExt;
 import cn.wildfirechat.model.Conversation;
 
+/**
+ * Desc 聊天会话底部功能面板
+ * 照片、文件、视频通话、位置、名片等
+ */
 public class ConversationExtManager {
     private static ConversationExtManager instance;
     private List<ConversationExt> conversationExts;
@@ -37,10 +37,10 @@ public class ConversationExtManager {
         registerExt(ImageExt.class);
         registerExt(VoipExt.class);
         registerExt(ShootExt.class);
-        registerExt(FileExt.class);
-        registerExt(LocationExt.class);
-        registerExt(ExampleAudioInputExt.class);
-        registerExt(UserCardExt.class);
+//        registerExt(FileExt.class);
+//        registerExt(LocationExt.class);
+//        registerExt(ExampleAudioInputExt.class);
+//        registerExt(UserCardExt.class);
     }
 
     public void registerExt(Class<? extends ConversationExt> clazz) {

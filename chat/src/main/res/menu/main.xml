@@ -13,11 +13,19 @@
         android:title="更多"
         app:showAsAction="always">
         <menu>
-            <item
+            <!--<item
                 android:id="@+id/chat"
                 android:icon="@mipmap/ic_create_group_chat"
                 android:orderInCategory="100"
                 android:title="发起群聊"
+                app:iconTint="@color/colorPrimary"
+                app:showAsAction="never" />-->
+
+            <item
+                android:id="@+id/robot"
+                android:icon="@mipmap/ic_create_group_chat"
+                android:orderInCategory="100"
+                android:title="创建智能体"
                 app:iconTint="@color/colorPrimary"
                 app:showAsAction="never" />
 

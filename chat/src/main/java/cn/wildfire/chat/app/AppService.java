@@ -45,17 +45,6 @@ import okhttp3.MediaType;
 public class AppService implements AppServiceProvider {
     private static final AppService Instance = new AppService();
 
-    /**
-     * App Server默认使用的是8888端口，替换为自己部署的服务时需要注意端口别填错了
-     * <br>
-     * <br>
-     * 正式商用时，建议用https，确保token安全
-     * <br>
-     * <br>
-     */
-    public static String APP_SERVER_ADDRESS/*请仔细阅读上面的注释*/ = "http://wildfirechat.net:8888";
-//    public static String APP_SERVER_ADDRESS/*请仔细阅读上面的注释*/ = "https://app.wildfirechat.net";
-
     private AppService() {
 
     }
@@ -71,12 +60,9 @@ public class AppService implements AppServiceProvider {
     }
 
     public void passwordLogin(String mobile, String password, LoginCallback callback) {
-
-        String url = APP_SERVER_ADDRESS + "/login_pwd";
         Map<String, Object> params = new HashMap<>();
         params.put("mobile", mobile);
         params.put("password", password);
-
         //如果是android pad设备，需要改这里，另外需要在ClientService对象中修改设备类型，请在ClientService代码中搜索"android pad"
         //if（当前设备是android pad)
         //  params.put("platform", new Integer(9));
@@ -91,7 +77,7 @@ public class AppService implements AppServiceProvider {
             return;
         }
 
-        OKHttpHelper.post(url, params, new SimpleCallback<LoginResult>() {
+        OKHttpHelper.post(AppServiceUrl.Login_PWD, params, new SimpleCallback<LoginResult>() {
             @Override
             public void onUiSuccess(LoginResult loginResult) {
                 callback.onUiSuccess(loginResult);
@@ -105,13 +91,9 @@ public class AppService implements AppServiceProvider {
     }
 
     public void smsLogin(String phoneNumber, String authCode, LoginCallback callback) {
-
-        String url = APP_SERVER_ADDRESS + "/login";
         Map<String, Object> params = new HashMap<>();
         params.put("mobile", phoneNumber);
         params.put("code", authCode);
-
-
         //Platform_iOS = 1,
         //Platform_Android = 2,
         //Platform_Windows = 3,
@@ -136,7 +118,7 @@ public class AppService implements AppServiceProvider {
             return;
         }
 
-        OKHttpHelper.post(url, params, new SimpleCallback<LoginResult>() {
+        OKHttpHelper.post(AppServiceUrl.Login_SMS, params, new SimpleCallback<LoginResult>() {
             @Override
             public void onUiSuccess(LoginResult loginResult) {
                 callback.onUiSuccess(loginResult);
@@ -149,9 +131,7 @@ public class AppService implements AppServiceProvider {
         });
     }
 
-
     public void resetPassword(String mobile, String code, String password, SimpleCallback<StatusResult> callback) {
-        String url = APP_SERVER_ADDRESS + "/reset_pwd";
         Map<String, Object> params = new HashMap<>();
         if (!TextUtils.isEmpty(mobile)) {
             params.put("mobile", mobile);
@@ -159,16 +139,15 @@ public class AppService implements AppServiceProvider {
         params.put("resetCode", code);
         params.put("newPassword", password);
 
-        OKHttpHelper.post(url, params, callback);
+        OKHttpHelper.post(AppServiceUrl.RESET_PWD, params, callback);
     }
 
     public void changePassword(String oldPassword, String newPassword, SimpleCallback<StatusResult> callback) {
-        String url = APP_SERVER_ADDRESS + "/change_pwd";
         Map<String, Object> params = new HashMap<>();
         params.put("oldPassword", oldPassword);
         params.put("newPassword", newPassword);
 
-        OKHttpHelper.post(url, params, callback);
+        OKHttpHelper.post(AppServiceUrl.CHANGE_PWD, params, callback);
 
     }
 
@@ -179,11 +158,9 @@ public class AppService implements AppServiceProvider {
     }
 
     public void requestAuthCode(String phoneNumber, SendCodeCallback callback) {
-
-        String url = APP_SERVER_ADDRESS + "/send_code";
         Map<String, Object> params = new HashMap<>();
         params.put("mobile", phoneNumber);
-        OKHttpHelper.post(url, params, new SimpleCallback<StatusResult>() {
+        OKHttpHelper.post(AppServiceUrl.SEND_CODE, params, new SimpleCallback<StatusResult>() {
             @Override
             public void onUiSuccess(StatusResult statusResult) {
                 if (statusResult.getCode() == 0) {
@@ -202,13 +179,11 @@ public class AppService implements AppServiceProvider {
     }
 
     public void requestResetAuthCode(String phoneNumber, SendCodeCallback callback) {
-
-        String url = APP_SERVER_ADDRESS + "/send_reset_code";
         Map<String, Object> params = new HashMap<>();
         if (!TextUtils.isEmpty(phoneNumber)) {
             params.put("mobile", phoneNumber);
         }
-        OKHttpHelper.post(url, params, new SimpleCallback<StatusResult>() {
+        OKHttpHelper.post(AppServiceUrl.SEND_CODE_REPEAT, params, new SimpleCallback<StatusResult>() {
             @Override
             public void onUiSuccess(StatusResult statusResult) {
                 if (statusResult.getCode() == 0) {
@@ -233,9 +208,7 @@ public class AppService implements AppServiceProvider {
     }
 
     public void scanPCLogin(String token, ScanPCCallback callback) {
-        String url = APP_SERVER_ADDRESS + "/scan_pc";
-        url += "/" + token;
-        OKHttpHelper.post(url, null, new SimpleCallback<PCSession>() {
+        OKHttpHelper.post(String.format(AppServiceUrl.LOGIN_PC_SCAN, token), null, new SimpleCallback<PCSession>() {
             @Override
             public void onUiSuccess(PCSession pcSession) {
                 if (pcSession.getStatus() == 1) {
@@ -259,13 +232,11 @@ public class AppService implements AppServiceProvider {
     }
 
     public void confirmPCLogin(String token, String userId, PCLoginCallback callback) {
-        String url = APP_SERVER_ADDRESS + "/confirm_pc";
-
         Map<String, Object> params = new HashMap<>(3);
         params.put("user_id", userId);
         params.put("token", token);
         params.put("quick_login", 1);
-        OKHttpHelper.post(url, params, new SimpleCallback<PCSession>() {
+        OKHttpHelper.post(AppServiceUrl.LOGIN_PC_CONFIRM, params, new SimpleCallback<PCSession>() {
             @Override
             public void onUiSuccess(PCSession pcSession) {
                 if (pcSession.getStatus() == 2) {
@@ -283,11 +254,9 @@ public class AppService implements AppServiceProvider {
     }
 
     public void cancelPCLogin(String token, PCLoginCallback callback) {
-        String url = APP_SERVER_ADDRESS + "/cancel_pc";
-
         Map<String, Object> params = new HashMap<>(3);
         params.put("token", token);
-        OKHttpHelper.post(url, params, new SimpleCallback<PCSession>() {
+        OKHttpHelper.post(AppServiceUrl.LOGIN_PC_REJECT, params, new SimpleCallback<PCSession>() {
             @Override
             public void onUiSuccess(PCSession pcSession) {
                 if (pcSession.getStatus() == 2) {
@@ -304,15 +273,12 @@ public class AppService implements AppServiceProvider {
         });
     }
 
-
     @Override
     public void getGroupAnnouncement(String groupId, AppServiceProvider.GetGroupAnnouncementCallback callback) {
         //从SP中获取到历史数据callback回去，然后再从网络刷新
-        String url = APP_SERVER_ADDRESS + "/get_group_announcement";
-
         Map<String, Object> params = new HashMap<>(2);
         params.put("groupId", groupId);
-        OKHttpHelper.post(url, params, new SimpleCallback<GroupAnnouncement>() {
+        OKHttpHelper.post(AppServiceUrl.GET_GROUP_ANNOUNCEMENT, params, new SimpleCallback<GroupAnnouncement>() {
             @Override
             public void onUiSuccess(GroupAnnouncement announcement) {
                 callback.onUiSuccess(announcement);
@@ -325,17 +291,14 @@ public class AppService implements AppServiceProvider {
         });
     }
 
-
     @Override
     public void updateGroupAnnouncement(String groupId, String announcement, AppServiceProvider.UpdateGroupAnnouncementCallback callback) {
         //更新到应用服务，再保存到本地SP中
-        String url = APP_SERVER_ADDRESS + "/put_group_announcement";
-
         Map<String, Object> params = new HashMap<>(2);
         params.put("groupId", groupId);
         params.put("author", ChatManagerHolder.gChatManager.getUserId());
         params.put("text", announcement);
-        OKHttpHelper.post(url, params, new SimpleCallback<GroupAnnouncement>() {
+        OKHttpHelper.post(AppServiceUrl.PUT_GROUP_ANNOUNCEMENT, params, new SimpleCallback<GroupAnnouncement>() {
             @Override
             public void onUiSuccess(GroupAnnouncement announcement) {
                 callback.onUiSuccess(announcement);
@@ -376,7 +339,7 @@ public class AppService implements AppServiceProvider {
         SharedPreferences sp = context.getSharedPreferences("log_history", Context.MODE_PRIVATE);
 
         String userId = ChatManager.Instance().getUserId();
-        String url = APP_SERVER_ADDRESS + "/logs/" + userId + "/upload";
+        String url = AppServiceUrl.UPLOAD_LOG + userId + "/upload";
 
         int toUploadCount = 0;
         Collections.sort(filePaths);
@@ -416,11 +379,9 @@ public class AppService implements AppServiceProvider {
 
     @Override
     public void changeName(String newName, SimpleCallback<Void> callback) {
-        String url = APP_SERVER_ADDRESS + "/change_name";
-
         Map<String, Object> params = new HashMap<>(2);
         params.put("newName", newName);
-        OKHttpHelper.post(url, params, new SimpleCallback<Void>() {
+        OKHttpHelper.post(AppServiceUrl.CHANGE_NAME, params, new SimpleCallback<Void>() {
             @Override
             public void onUiSuccess(Void aVoid) {
                 callback.onUiSuccess(null);
@@ -438,12 +399,10 @@ public class AppService implements AppServiceProvider {
         if (callback == null) {
             return;
         }
-
-        String url = APP_SERVER_ADDRESS + "/fav/list";
         Map<String, Object> params = new HashMap<>();
         params.put("id", startId);
         params.put("count", count);
-        OKHttpHelper.post(url, params, new SimpleCallback<String>() {
+        OKHttpHelper.post(AppServiceUrl.GET_FAVORITE_LIST, params, new SimpleCallback<String>() {
             @Override
             public void onUiSuccess(String s) {
                 try {
@@ -457,16 +416,16 @@ public class AppService implements AppServiceProvider {
                         JSONObject itemObj = items.getJSONObject(i);
                         Conversation conversation = new Conversation(Conversation.ConversationType.type(itemObj.getInt("convType")), itemObj.getString("convTarget"), itemObj.getInt("convLine"));
                         FavoriteItem item = new FavoriteItem(itemObj.getInt("id"),
-                            itemObj.optLong("messageUid"),
-                            itemObj.getInt("type"),
-                            itemObj.getLong("timestamp"),
-                            conversation,
-                            itemObj.getString("origin"),
-                            itemObj.getString("sender"),
-                            itemObj.getString("title"),
-                            itemObj.getString("url"),
-                            itemObj.getString("thumbUrl"),
-                            itemObj.getString("data")
+                                itemObj.optLong("messageUid"),
+                                itemObj.getInt("type"),
+                                itemObj.getLong("timestamp"),
+                                conversation,
+                                itemObj.getString("origin"),
+                                itemObj.getString("sender"),
+                                itemObj.getString("title"),
+                                itemObj.getString("url"),
+                                itemObj.getString("thumbUrl"),
+                                itemObj.getString("data")
                         );
 
                         favoriteItems.add(item);
@@ -489,7 +448,6 @@ public class AppService implements AppServiceProvider {
 
     @Override
     public void addFavoriteItem(FavoriteItem item, SimpleCallback<Void> callback) {
-        String url = APP_SERVER_ADDRESS + "/fav/add";
         Map<String, Object> params = new HashMap<>();
         params.put("messageUid", item.getMessageUid());
         params.put("type", item.getFavType());
@@ -503,25 +461,24 @@ public class AppService implements AppServiceProvider {
         params.put("thumbUrl", item.getThumbUrl());
         params.put("data", item.getData());
 
-        OKHttpHelper.post(url, params, callback);
+        OKHttpHelper.post(AppServiceUrl.ADD_FAVORITE, params, callback);
     }
 
     @Override
     public void removeFavoriteItem(int favId, SimpleCallback<Void> callback) {
-        String url = APP_SERVER_ADDRESS + "/fav/del/" + favId;
-        OKHttpHelper.post(url, null, callback);
+        OKHttpHelper.post(String.format(AppServiceUrl.DEL_FAVORITE, favId), null, callback);
     }
 
     public static void validateConfig(Context context) {
         if (TextUtils.isEmpty(Config.IM_SERVER_HOST)
-            || Config.IM_SERVER_HOST.startsWith("http")
-            || Config.IM_SERVER_HOST.contains(":")
-            || TextUtils.isEmpty(APP_SERVER_ADDRESS)
-            || (!APP_SERVER_ADDRESS.startsWith("http") && !APP_SERVER_ADDRESS.startsWith("https"))
-            || Config.IM_SERVER_HOST.equals("127.0.0.1")
-            || APP_SERVER_ADDRESS.contains("127.0.0.1")
-            || (!Config.IM_SERVER_HOST.contains("wildfirechat.net") && APP_SERVER_ADDRESS.contains("wildfirechat.net"))
-            || (Config.IM_SERVER_HOST.contains("wildfirechat.net") && !APP_SERVER_ADDRESS.contains("wildfirechat.net"))
+                || Config.IM_SERVER_HOST.startsWith("http")
+                || Config.IM_SERVER_HOST.contains(":")
+                || TextUtils.isEmpty(AppServiceUrl.HOST)
+                || (!AppServiceUrl.HOST.startsWith("http") && !AppServiceUrl.HOST.startsWith("https"))
+                || Config.IM_SERVER_HOST.equals("127.0.0.1")
+                || AppServiceUrl.HOST.contains("127.0.0.1")
+                || (!Config.IM_SERVER_HOST.contains("wildfirechat.net") && AppServiceUrl.HOST.contains("wildfirechat.net"))
+                || (Config.IM_SERVER_HOST.contains("wildfirechat.net") && !AppServiceUrl.HOST.contains("wildfirechat.net"))
         ) {
             Toast.makeText(context, "配置错误，请检查配置，应用即将关闭...", Toast.LENGTH_LONG).show();
             new Handler().postDelayed(() -> {
@@ -544,8 +501,7 @@ public class AppService implements AppServiceProvider {
         if (callback == null) {
             return;
         }
-        String url = APP_SERVER_ADDRESS + "/conference/get_my_id";
-        OKHttpHelper.post(url, null, new SimpleCallback<String>() {
+        OKHttpHelper.post(AppServiceUrl.CONFERENCE_PRIVATE_ID, null, new SimpleCallback<String>() {
 
             @Override
             public void onUiSuccess(String response) {
@@ -571,8 +527,7 @@ public class AppService implements AppServiceProvider {
 
     @Override
     public void createConference(ConferenceInfo info, GeneralCallback2 callback) {
-        String url = APP_SERVER_ADDRESS + "/conference/create";
-        OKHttpHelper.post(url, info, new SimpleCallback<String>() {
+        OKHttpHelper.post(AppServiceUrl.CONFERENCE_CREATE, info, new SimpleCallback<String>() {
             @Override
             public void onUiSuccess(String response) {
                 try {
@@ -600,13 +555,12 @@ public class AppService implements AppServiceProvider {
         if (callback == null) {
             return;
         }
-        String url = APP_SERVER_ADDRESS + "/conference/info";
         Map<String, String> map = new HashMap<>();
         map.put("conferenceId", conferenceId);
         if (!TextUtils.isEmpty(password)) {
             map.put("password", password);
         }
-        OKHttpHelper.post(url, map, new SimpleCallback<ConferenceInfo>() {
+        OKHttpHelper.post(AppServiceUrl.CONFERENCE_INFO, map, new SimpleCallback<ConferenceInfo>() {
 
             @Override
             public void onUiSuccess(ConferenceInfo info) {
@@ -622,8 +576,7 @@ public class AppService implements AppServiceProvider {
 
     @Override
     public void destroyConference(String conferenceId, GeneralCallback callback) {
-        String url = APP_SERVER_ADDRESS + "/conference/destroy/" + conferenceId;
-        OKHttpHelper.post(url, null, new SimpleCallback<StatusResult>() {
+        OKHttpHelper.post(String.format(AppServiceUrl.CONFERENCE_DESTROY, conferenceId), null, new SimpleCallback<StatusResult>() {
 
             @Override
             public void onUiSuccess(StatusResult statusResult) {
@@ -643,8 +596,7 @@ public class AppService implements AppServiceProvider {
 
     @Override
     public void favConference(String conferenceId, GeneralCallback callback) {
-        String url = APP_SERVER_ADDRESS + "/conference/fav/" + conferenceId;
-        OKHttpHelper.post(url, null, new SimpleCallback<StatusResult>() {
+        OKHttpHelper.post(String.format(AppServiceUrl.CONFERENCE_FAVORITE, conferenceId), null, new SimpleCallback<StatusResult>() {
             @Override
             public void onUiSuccess(StatusResult statusResult) {
                 if (callback != null) {
@@ -668,8 +620,7 @@ public class AppService implements AppServiceProvider {
 
     @Override
     public void unfavConference(String conferenceId, GeneralCallback callback) {
-        String url = APP_SERVER_ADDRESS + "/conference/unfav/" + conferenceId;
-        OKHttpHelper.post(url, null, new SimpleCallback<StatusResult>() {
+        OKHttpHelper.post(String.format(AppServiceUrl.CONFERENCE_FAVORITE_NOT, conferenceId), null, new SimpleCallback<StatusResult>() {
             @Override
             public void onUiSuccess(StatusResult statusResult) {
                 if (callback != null) {
@@ -692,8 +643,7 @@ public class AppService implements AppServiceProvider {
 
     @Override
     public void isFavConference(String conferenceId, BooleanCallback callback) {
-        String url = APP_SERVER_ADDRESS + "/conference/is_fav/" + conferenceId;
-        OKHttpHelper.post(url, null, new SimpleCallback<StatusResult>() {
+        OKHttpHelper.post(String.format(AppServiceUrl.CONFERENCE_FAVORITE_IS, conferenceId), null, new SimpleCallback<StatusResult>() {
             @Override
             public void onUiSuccess(StatusResult statusResult) {
                 if (callback != null) {
@@ -718,8 +668,7 @@ public class AppService implements AppServiceProvider {
 
     @Override
     public void getFavConferences(FavConferenceCallback callback) {
-        String url = APP_SERVER_ADDRESS + "/conference/fav_conferences";
-        OKHttpHelper.post(url, null, new SimpleCallback<List<ConferenceInfo>>() {
+        OKHttpHelper.post(AppServiceUrl.CONFERENCE_FAVORITE_LSIT, null, new SimpleCallback<List<ConferenceInfo>>() {
             @Override
             public void onUiSuccess(List<ConferenceInfo> favConferences) {
                 if (callback != null) {
@@ -738,8 +687,7 @@ public class AppService implements AppServiceProvider {
 
     @Override
     public void updateConference(ConferenceInfo conferenceInfo, GeneralCallback callback) {
-        String url = APP_SERVER_ADDRESS + "/conference/put_info";
-        OKHttpHelper.post(url, conferenceInfo, new SimpleCallback<StatusResult>() {
+        OKHttpHelper.post(AppServiceUrl.CONFERENCE_INFO_PUT, conferenceInfo, new SimpleCallback<StatusResult>() {
             @Override
             public void onUiSuccess(StatusResult statusResult) {
                 if (callback != null) {
@@ -758,10 +706,9 @@ public class AppService implements AppServiceProvider {
 
     @Override
     public void recordConference(String conferenceId, boolean record, GeneralCallback callback) {
-        String url = APP_SERVER_ADDRESS + "/conference/recording/" + conferenceId;
         Map<String, Boolean> params = new HashMap<>();
         params.put("recording", record);
-        OKHttpHelper.post(url, params, new SimpleCallback<StatusResult>() {
+        OKHttpHelper.post(String.format(AppServiceUrl.CONFERENCE_RECORDING, conferenceId), params, new SimpleCallback<StatusResult>() {
             @Override
             public void onUiSuccess(StatusResult statusResult) {
                 if (callback != null) {
@@ -780,10 +727,9 @@ public class AppService implements AppServiceProvider {
 
     @Override
     public void setConferenceFocusUserId(String conferenceId, String userId, GeneralCallback callback) {
-        String url = APP_SERVER_ADDRESS + "/conference/focus/" + conferenceId;
         Map<String, String> params = new HashMap<>();
         params.put("userId", TextUtils.isEmpty(userId) ? "" : userId);
-        OKHttpHelper.post(url, params, new SimpleCallback<StatusResult>() {
+        OKHttpHelper.post(String.format(AppServiceUrl.CONFERENCE_FOCUS, conferenceId), params, new SimpleCallback<StatusResult>() {
             @Override
             public void onUiSuccess(StatusResult statusResult) {
                 if (callback != null) {

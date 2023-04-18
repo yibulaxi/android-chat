@@ -8,7 +8,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.widget.TextView;
 
-import cn.wildfire.chat.app.AppService;
+import cn.wildfire.chat.app.AppServiceUrl;
 import cn.wildfire.chat.kit.Config;
 import cn.wildfire.chat.kit.WfcBaseActivity;
 import cn.wildfire.chat.kit.WfcWebViewActivity;
@@ -42,10 +42,10 @@ public class AboutActivity extends WfcBaseActivity {
         try {
             PackageInfo packageInfo = packageManager.getPackageInfo(getPackageName(), PackageManager.GET_CONFIGURATIONS);
             String info = packageInfo.packageName + "\n"
-                + packageInfo.versionCode + " " + packageInfo.versionName + "\n"
-                + ChatManager.Instance().getProtoRevision() + "\n"
-                + Config.IM_SERVER_HOST + "\n"
-                + AppService.APP_SERVER_ADDRESS + "\n";
+                    + packageInfo.versionCode + " " + packageInfo.versionName + "\n"
+                    + ChatManager.Instance().getProtoRevision() + "\n"
+                    + Config.IM_SERVER_HOST + "\n"
+                    + AppServiceUrl.HOST + "\n";
 
             for (String[] ice : Config.ICE_SERVERS) {
                 info += ice[0] + " " + ice[1] + " " + ice[2] + "\n";

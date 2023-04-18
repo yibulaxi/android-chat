@@ -99,6 +99,9 @@
             android:name="cn.wildfire.chat.kit.conversation.CreateConversationActivity"
             android:label="创建会话" />
         <activity
+            android:name="cn.wildfire.chat.kit.conversation.CreateRobotActivity"
+            android:label="创建智能体" />
+        <activity
             android:name="cn.wildfire.chat.kit.group.AddGroupMemberActivity"
             android:label="添加新成员" />
         <activity

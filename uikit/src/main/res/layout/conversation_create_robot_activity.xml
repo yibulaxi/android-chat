@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="HardcodedText">
+
+    <include
+        android:id="@+id/icTitle"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:text="名字"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/etName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/etName" />
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:autofillHints="false"
+        android:hint="为你的智能体取个名字吧"
+        android:inputType="text"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text"
+        app:layout_constraintTop_toBottomOf="@id/icTitle" />
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="性别"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/rgSex"
+        app:layout_constraintStart_toStartOf="@id/text"
+        app:layout_constraintTop_toTopOf="@id/rgSex" />
+
+    <RadioGroup
+        android:id="@+id/rgSex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@id/text1"
+        app:layout_constraintTop_toBottomOf="@id/etName">
+
+        <RadioButton
+            android:id="@+id/rBtnBoy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="男" />
+
+        <RadioButton
+            android:id="@+id/rBtnGirl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:text="女" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="可见范围"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/rgRange"
+        app:layout_constraintStart_toStartOf="@id/text"
+        app:layout_constraintTop_toTopOf="@id/rgRange" />
+
+    <RadioGroup
+        android:id="@+id/rgRange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@id/text2"
+        app:layout_constraintTop_toBottomOf="@id/rgSex">
+
+        <RadioButton
+            android:id="@+id/rBtnPublic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="公开" />
+
+        <RadioButton
+            android:id="@+id/rBtnPrivate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:text="私密" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/text3"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="设定描述"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/tvRandom"
+        app:layout_constraintStart_toStartOf="@id/text"
+        app:layout_constraintTop_toTopOf="@id/tvRandom" />
+
+    <TextView
+        android:id="@+id/tvRandom"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/sel_btn_able"
+        android:gravity="center"
+        android:text="随机生成"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toEndOf="@id/text2"
+        app:layout_constraintTop_toBottomOf="@id/rgRange" />
+
+
+    <EditText
+        android:id="@+id/etDesc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:autofillHints="false"
+        android:background="@drawable/shape_message_ref_bg"
+        android:gravity="top"
+        android:hint="大唐元年，他是起义军的一份子，魁梧勇猛，意外获得了长生不老的秘密..."
+        android:inputType="textMultiLine"
+        android:minHeight="100dp"
+        android:padding="10dp"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="@id/etName"
+        app:layout_constraintStart_toStartOf="@id/text"
+        app:layout_constraintTop_toBottomOf="@id/tvRandom" />
+
+    <TextView
+        android:id="@+id/text4"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="开场白"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@id/etPrologue"
+        app:layout_constraintStart_toStartOf="@id/text"
+        app:layout_constraintTop_toTopOf="@id/etPrologue" />
+
+    <EditText
+        android:id="@+id/etPrologue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:autofillHints="false"
+        android:hint="你今天过得如何"
+        android:inputType="text"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="@id/etName"
+        app:layout_constraintStart_toEndOf="@id/text"
+        app:layout_constraintTop_toBottomOf="@id/etDesc" />
+
+    <TextView
+        android:id="@+id/tvConfirm"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_margin="22dp"
+        android:background="@drawable/sel_btn_able"
+        android:gravity="center"
+        android:text="确认创建"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
