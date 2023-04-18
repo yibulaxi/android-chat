@@ -4,7 +4,6 @@
 
 package cn.wildfire.chat.app.main;
 
-import android.Manifest;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -12,9 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Build;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -50,13 +47,10 @@ import cn.wildfire.chat.kit.WfcBaseActivity;
 import cn.wildfire.chat.kit.WfcScheme;
 import cn.wildfire.chat.kit.WfcUIKit;
 import cn.wildfire.chat.kit.channel.ChannelInfoActivity;
-import cn.wildfire.chat.kit.contact.ContactListActivity;
 import cn.wildfire.chat.kit.contact.ContactListFragment;
 import cn.wildfire.chat.kit.contact.ContactViewModel;
-import cn.wildfire.chat.kit.contact.newfriend.SearchUserActivity;
 import cn.wildfire.chat.kit.conversation.ConversationActivity;
 import cn.wildfire.chat.kit.conversation.ConversationViewModel;
-import cn.wildfire.chat.kit.conversation.CreateConversationActivity;
 import cn.wildfire.chat.kit.conversation.CreateRobotActivity;
 import cn.wildfire.chat.kit.conversation.forward.ForwardActivity;
 import cn.wildfire.chat.kit.conversationlist.ConversationListFragment;
@@ -72,7 +66,6 @@ import cn.wildfire.chat.kit.user.UserViewModel;
 import cn.wildfire.chat.kit.viewmodel.MessageViewModel;
 import cn.wildfire.chat.kit.voip.conference.ConferenceInfoActivity;
 import cn.wildfire.chat.kit.widget.ViewPagerFixed;
-import cn.wildfire.chat.kit.workspace.WebViewFragment;
 import cn.wildfirechat.chat.R;
 import cn.wildfirechat.client.ConnectionStatus;
 import cn.wildfirechat.message.LinkMessageContent;
@@ -142,9 +135,6 @@ public class MainActivity extends WfcBaseActivity implements ViewPager.OnPageCha
     @Override
     protected void afterViews() {
         bottomNavigationView.setItemIconTintList(null);
-  /*      if (TextUtils.isEmpty(Config.WORKSPACE_URL)) {
-            bottomNavigationView.getMenu().removeItem(R.id.workspace);
-        }*/
         IMServiceStatusViewModel imServiceStatusViewModel = ViewModelProviders.of(this).get(IMServiceStatusViewModel.class);
         imServiceStatusViewModel.imServiceStatusLiveData().observe(this, imStatusLiveDataObserver);
         IMConnectionStatusViewModel connectionStatusViewModel = ViewModelProviders.of(this).get(IMConnectionStatusViewModel.class);
@@ -201,15 +191,6 @@ public class MainActivity extends WfcBaseActivity implements ViewPager.OnPageCha
         }
     }
 
-    @Override
-    protected void afterMenus(Menu menu) {
-        super.afterMenus(menu);
-        boolean isEnableSecretChat = ChatManager.Instance().isEnableSecretChat();
-        if (!isEnableSecretChat) {
-            MenuItem menuItem = menu.findItem(R.id.secretChat);
-            menuItem.setEnabled(false);
-        }
-    }
 
     private void reLogin(boolean isKickedOff) {
         Intent intent = new Intent(this, SplashActivity.class);
@@ -326,18 +307,11 @@ public class MainActivity extends WfcBaseActivity implements ViewPager.OnPageCha
         //设置ViewPager的最大缓存页面
         contentViewPager.setOffscreenPageLimit(4);
 
-        ConversationListFragment conversationListFragment = new ConversationListFragment();
         contactListFragment = new ContactListFragment();
-        DiscoveryFragment discoveryFragment = new DiscoveryFragment();
-        MeFragment meFragment = new MeFragment();
-        mFragmentList.add(conversationListFragment);
+        mFragmentList.add(new ConversationListFragment());
         mFragmentList.add(contactListFragment);
-       /* boolean showWorkSpace = !TextUtils.isEmpty(Config.WORKSPACE_URL);
-        if (showWorkSpace) {
-            mFragmentList.add(WebViewFragment.loadUrl(Config.WORKSPACE_URL));
-        }*/
-        mFragmentList.add(discoveryFragment);
-        mFragmentList.add(meFragment);
+        mFragmentList.add(new DiscoveryFragment());
+        mFragmentList.add(new MeFragment());
         contentViewPager.setAdapter(new HomeFragmentPagerAdapter(getSupportFragmentManager(), mFragmentList));
         contentViewPager.setOnPageChangeListener(this);
 
@@ -357,16 +331,8 @@ public class MainActivity extends WfcBaseActivity implements ViewPager.OnPageCha
                         setTitleBackgroundResource(R.color.gray5, false);
                     }
                     break;
-              /*  case R.id.workspace:
-                    contentViewPager.setCurrentItem(2, false);
-                    setTitle("工作台");
-                    if (!isDarkTheme()) {
-                        setTitleBackgroundResource(R.color.gray5, false);
-                    }
-                    break;*/
                 case R.id.discovery:
                     contentViewPager.setCurrentItem(2, false);
-                    /*  contentViewPager.setCurrentItem(showWorkSpace ? 3 : 2, false);*/
                     setTitle("秀场");
                     if (!isDarkTheme()) {
                         setTitleBackgroundResource(R.color.gray5, false);
@@ -374,7 +340,6 @@ public class MainActivity extends WfcBaseActivity implements ViewPager.OnPageCha
                     break;
                 case R.id.me:
                     contentViewPager.setCurrentItem(3, false);
-                    /*contentViewPager.setCurrentItem(showWorkSpace ? 3 : 2, false);*/
                     setTitle("我的");
                     if (!isDarkTheme()) {
                         setTitleBackgroundResource(R.color.white, false);
@@ -393,28 +358,10 @@ public class MainActivity extends WfcBaseActivity implements ViewPager.OnPageCha
             case R.id.search:
                 showSearchPortal();
                 break;
-           /* case R.id.chat:
-                createConversation();
-                break;*/
-            case R.id.robot:
+            case R.id.more:
                 Intent intent = new Intent(this, CreateRobotActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.secretChat:
-                pickContactToCreateSecretConversation();
-                break;
-            case R.id.add_contact:
-                searchUser();
-                break;
-            case R.id.scan_qrcode:
-                String[] permissions = new String[]{Manifest.permission.CAMERA};
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!checkPermission(permissions)) {
-                        requestPermissions(permissions, 100);
-                        return true;
-                    }
-                }
-                startActivityForResult(new Intent(this, ScanQRCodeActivity.class), REQUEST_CODE_SCAN_QR_CODE);
             default:
                 break;
         }
@@ -423,11 +370,6 @@ public class MainActivity extends WfcBaseActivity implements ViewPager.OnPageCha
 
     private void showSearchPortal() {
         Intent intent = new Intent(this, SearchPortalActivity.class);
-        startActivity(intent);
-    }
-
-    private void createConversation() {
-        Intent intent = new Intent(this, CreateConversationActivity.class);
         startActivity(intent);
     }
 
@@ -451,16 +393,6 @@ public class MainActivity extends WfcBaseActivity implements ViewPager.OnPageCha
         });
     }
 
-    private void pickContactToCreateSecretConversation() {
-        Intent intent = new Intent(this, ContactListActivity.class);
-        intent.putExtra("showChannel", false);
-        startActivityForResult(intent, REQUEST_CODE_PICK_CONTACT);
-    }
-
-    private void searchUser() {
-        Intent intent = new Intent(this, SearchUserActivity.class);
-        startActivity(intent);
-    }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -468,11 +400,6 @@ public class MainActivity extends WfcBaseActivity implements ViewPager.OnPageCha
 
     @Override
     public void onPageSelected(int position) {
-       /* if (TextUtils.isEmpty(Config.WORKSPACE_URL)) {
-            if (position > 1) {
-                position++;
-            }
-        }*/
         switch (position) {
             case 0:
                 bottomNavigationView.setSelectedItemId(R.id.conversation_list);
@@ -480,9 +407,6 @@ public class MainActivity extends WfcBaseActivity implements ViewPager.OnPageCha
             case 1:
                 bottomNavigationView.setSelectedItemId(R.id.contact);
                 break;
-//            case 2:
-//                bottomNavigationView.setSelectedItemId(R.id.workspace);
-//                break;
             case 2:
                 bottomNavigationView.setSelectedItemId(R.id.discovery);
                 break;
