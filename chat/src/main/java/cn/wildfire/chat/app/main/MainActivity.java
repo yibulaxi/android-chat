@@ -319,7 +319,7 @@ public class MainActivity extends WfcBaseActivity implements ViewPager.OnPageCha
             switch (item.getItemId()) {
                 case R.id.conversation_list:
                     contentViewPager.setCurrentItem(0, false);
-                    setTitle("野火");
+                    setTitle(R.string.app_name);
                     if (!isDarkTheme()) {
                         setTitleBackgroundResource(R.color.gray5, false);
                     }
