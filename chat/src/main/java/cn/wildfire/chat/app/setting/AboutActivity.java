@@ -8,7 +8,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.widget.TextView;
 
-import cn.wildfire.chat.app.AppServiceUrl;
+import cn.wildfirechat.AppServiceUrl;
 import cn.wildfire.chat.kit.Config;
 import cn.wildfire.chat.kit.WfcBaseActivity;
 import cn.wildfire.chat.kit.WfcWebViewActivity;
@@ -58,14 +58,14 @@ public class AboutActivity extends WfcBaseActivity {
     }
 
     public void intro() {
-        WfcWebViewActivity.loadUrl(this, "野火IM功能介绍", "https://docs.wildfirechat.cn/");
+        WfcWebViewActivity.loadUrl(this, "BotUS功能介绍", "https://docs.wildfirechat.cn/");
     }
 
     public void agreement() {
-        WfcWebViewActivity.loadUrl(this, "野火IM用户协议", "https://www.wildfirechat.net/wildfirechat_user_agreement.html");
+        WfcWebViewActivity.loadUrl(this, "BotUS用户协议", "https://www.wildfirechat.net/wildfirechat_user_agreement.html");
     }
 
     public void privacy() {
-        WfcWebViewActivity.loadUrl(this, "野火IM个人信息保护政策", "https://www.wildfirechat.net/wildfirechat_user_privacy.html");
+        WfcWebViewActivity.loadUrl(this, "BotUS个人信息保护政策", "https://www.wildfirechat.net/wildfirechat_user_privacy.html");
     }
 }

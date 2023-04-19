@@ -1,4 +1,4 @@
-package cn.wildfire.chat.app;
+package cn.wildfirechat;
 
 /**
  * Desc 网络请求地址
@@ -12,8 +12,9 @@ public class AppServiceUrl {
      * <br>
      * <br>
      */
-    public static String HOST/*请仔细阅读上面的注释*/ = "http://wildfirechat.net:8888";
-//    public static String APP_SERVER_ADDRESS/*请仔细阅读上面的注释*/ = "https://app.wildfirechat.net";
+//    public static String IP = "103.151.229.106";
+    public static String IP = "wildfirechat.net";
+    public static String HOST = "http://" + IP + ":8888";
 
     public static String Login_PWD = HOST + "/login_pwd";
     public static String Login_SMS = HOST + "/login";

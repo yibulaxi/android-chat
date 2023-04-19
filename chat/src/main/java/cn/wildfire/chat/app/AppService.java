@@ -35,6 +35,7 @@ import cn.wildfire.chat.kit.net.OKHttpHelper;
 import cn.wildfire.chat.kit.net.SimpleCallback;
 import cn.wildfire.chat.kit.net.base.StatusResult;
 import cn.wildfire.chat.kit.voip.conference.model.ConferenceInfo;
+import cn.wildfirechat.AppServiceUrl;
 import cn.wildfirechat.chat.BuildConfig;
 import cn.wildfirechat.model.Conversation;
 import cn.wildfirechat.remote.ChatManager;
@@ -477,8 +478,8 @@ public class AppService implements AppServiceProvider {
                 || (!AppServiceUrl.HOST.startsWith("http") && !AppServiceUrl.HOST.startsWith("https"))
                 || Config.IM_SERVER_HOST.equals("127.0.0.1")
                 || AppServiceUrl.HOST.contains("127.0.0.1")
-                || (!Config.IM_SERVER_HOST.contains("wildfirechat.net") && AppServiceUrl.HOST.contains("wildfirechat.net"))
-                || (Config.IM_SERVER_HOST.contains("wildfirechat.net") && !AppServiceUrl.HOST.contains("wildfirechat.net"))
+                || (!Config.IM_SERVER_HOST.contains(AppServiceUrl.IP) && AppServiceUrl.HOST.contains(AppServiceUrl.IP))
+                || (Config.IM_SERVER_HOST.contains(AppServiceUrl.IP) && !AppServiceUrl.HOST.contains(AppServiceUrl.IP))
         ) {
             Toast.makeText(context, "配置错误，请检查配置，应用即将关闭...", Toast.LENGTH_LONG).show();
             new Handler().postDelayed(() -> {

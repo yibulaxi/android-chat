@@ -16,6 +16,7 @@ import cn.wildfire.chat.kit.Config;
 import cn.wildfire.chat.kit.WfcUIKit;
 import cn.wildfire.chat.kit.conversation.message.viewholder.MessageViewHolderManager;
 import cn.wildfire.chat.kit.third.location.viewholder.LocationMessageContentViewHolder;
+import cn.wildfirechat.AppServiceUrl;
 import cn.wildfirechat.chat.BuildConfig;
 import cn.wildfirechat.chat.R;
 import cn.wildfirechat.push.PushService;
@@ -32,7 +33,7 @@ public class MyApp extends BaseApp {
         AppService.validateConfig(this);
 
         // bugly，务必替换为你自己的!!!
-        if ("wildfirechat.net".equals(Config.IM_SERVER_HOST)) {
+        if (AppServiceUrl.IP.equals(Config.IM_SERVER_HOST)) {
             CrashReport.initCrashReport(getApplicationContext(), BUGLY_ID, false);
         }
         // 只在主进程初始化，否则会导致重复收到消息

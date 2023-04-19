@@ -4,6 +4,8 @@
 
 package cn.wildfire.chat.kit;
 
+import cn.wildfirechat.AppServiceUrl;
+
 /**
  * Created by heavyrain lee on 2017/11/24.
  */
@@ -15,7 +17,7 @@ public class Config {
      * <br>
      * <br>
      */
-    public static String IM_SERVER_HOST /*请仔细阅读上面的注释*/ = "wildfirechat.net";
+    public static String IM_SERVER_HOST /*请仔细阅读上面的注释*/ = AppServiceUrl.IP;
 
     // 注意APP_SERVER_ADDRESS已从kit中移除，移动到了AppService.java中
     //public static String APP_SERVER_ADDRESS = "http://wildfirechat.net:8888";
@@ -83,10 +85,6 @@ public class Config {
 
     /**
      * 会话列表最多展示的会话数
-     * <p>
-     * 大量会话时，会导致，快速进出会话界面，会话消息加载缓慢，故再次控制会话数，只展示最新的{@link MAX_CONVERSATION_LIST_SIZE}条
-     * <p>
-     * 直接修改此字段不会生效，请修改{@link cn.wildfirechat.client.ClientService#MAX_CONVERSATION_LIST_SIZE }字段
      */
     public static final int MAX_CONVERSATION_LIST_SIZE = 1000;
 

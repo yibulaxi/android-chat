@@ -81,7 +81,7 @@ public class SetNameActivity extends WfcBaseActivity {
     private void changeAlias() {
         String displayName = nameEditText.getText().toString().trim();
         if (TextUtils.isEmpty(displayName)) {
-            Toast.makeText(this, "野火ID不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "BotUSID不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
         WfcUIKit.getWfcUIKit().getAppServiceProvider().changeName(displayName, new SimpleCallback<Void>() {

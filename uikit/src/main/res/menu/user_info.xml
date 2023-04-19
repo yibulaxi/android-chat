@@ -35,7 +35,7 @@
         android:id="@+id/setName"
         android:visible="false"
         android:orderInCategory="100"
-        android:title="修改野火ID"
+        android:title="修改BotUSID"
         app:showAsAction="never" />
 
     <item

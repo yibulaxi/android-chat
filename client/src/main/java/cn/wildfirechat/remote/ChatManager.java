@@ -457,7 +457,7 @@ public class ChatManager {
     }
 
     /**
-     * 当有自己的用户账号体系，不想使用野火IM提供的用户信息托管服务时，调用此方法设置用户信息源
+     * 当有自己的用户账号体系，不想使用BotUS提供的用户信息托管服务时，调用此方法设置用户信息源
      *
      * @param userSource 用户信息源
      */
@@ -1126,7 +1126,7 @@ public class ChatManager {
     }
 
     /**
-     * 获取clientId, 野火IM用clientId唯一表示用户设备
+     * 获取clientId, BotUS用clientId唯一表示用户设备
      */
     public synchronized String getClientId() {
         if (this.clientId != null) {
@@ -1164,7 +1164,7 @@ public class ChatManager {
     /**
      * 创建频道
      *
-     * @param channelId       频道id，如果传null，野火会自动生成id；否则，使用用户提供的id，需要保证此id的唯一性
+     * @param channelId       频道id，如果传null，BotUS会自动生成id；否则，使用用户提供的id，需要保证此id的唯一性
      * @param channelName     频道名称
      * @param channelPortrait 频道头像的网络地址
      * @param desc            频道描述

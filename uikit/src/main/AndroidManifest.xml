@@ -278,7 +278,7 @@
         <activity android:name=".group.manage.MuteGroupMemberActivity" />
         <activity
             android:name=".user.SetNameActivity"
-            android:label="修改野火ID" />
+            android:label="修改BotUSID" />
         <activity
             android:name=".conversation.message.CompositeMessageContentActivity"
             android:label="组合消息" />
