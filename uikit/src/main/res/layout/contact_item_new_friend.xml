@@ -65,15 +65,13 @@
             android:textSize="12sp"
             android:visibility="gone" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/style_common_btn"
             android:id="@+id/acceptButton"
-            style="?android:attr/borderlessButtonStyle"
             android:layout_width="46dp"
             android:layout_height="27dp"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/shape_new_friend_agree"
             android:text="接受"
-            android:textColor="@color/white"
             android:textSize="12sp"
             android:visibility="gone"
             tools:visibility="visible" />

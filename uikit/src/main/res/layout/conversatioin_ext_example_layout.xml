@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:text="example ext" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/style_common_btn"
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -51,7 +51,8 @@
                 </FrameLayout>
             </LinearLayout>
         </LinearLayout>
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/style_common_btn"
             android:id="@+id/actionButton"
             android:layout_width="80dp"
             android:layout_height="45dp"

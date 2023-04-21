@@ -129,7 +129,8 @@
         </LinearLayout>
     </LinearLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/style_common_btn"
         android:id="@+id/conferenceHistoryButton"
         android:layout_width="wrap_content"
         android:layout_height="30dp"

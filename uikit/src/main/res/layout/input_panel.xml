@@ -54,19 +54,17 @@
                 android:scaleType="centerInside"
                 android:src="@mipmap/ic_chat_emo" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/style_common_btn"
                 android:id="@+id/sendButton"
-                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="50dp"
                 android:layout_height="35dp"
                 android:layout_gravity="bottom"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="2.5dp"
-                android:background="@drawable/shape_session_btn_send"
                 android:enabled="false"
                 android:gravity="center"
                 android:text="@string/send"
-                android:textColor="@color/white"
                 android:textSize="13sp"
                 android:visibility="visible" />
         </LinearLayout>

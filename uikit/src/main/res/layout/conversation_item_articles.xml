@@ -19,11 +19,11 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/singleCoverImageView"
-            android:layout_width="match_parent"
+            android:layout_width="160dp"
             android:layout_height="160dp"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/topRoundedImageView_5dp"
-            tool:src="@mipmap/logo" />
+            tool:src="@mipmap/ic_launcher" />
 
 
         <TextView
@@ -52,7 +52,7 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/topRoundedImageView_5dp"
-            tool:src="@mipmap/logo" />
+            tool:src="@mipmap/ic_launcher" />
 
 
         <TextView

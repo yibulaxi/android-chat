@@ -20,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -105,13 +106,10 @@ public class ConversationListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void processConversationClick(ConversationViewHolder viewHolder, View itemView) {
         if (onClickConversationItemListener != null) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = viewHolder.getAdapterPosition();
-                    ConversationInfo conversationInfo = conversationInfos.get(position - headerCount());
-                    onClickConversationItemListener.onClickConversationItem(conversationInfo);
-                }
+            itemView.setOnClickListener(v -> {
+                int position = viewHolder.getAdapterPosition();
+                ConversationInfo conversationInfo = conversationInfos.get(position - headerCount());
+                onClickConversationItemListener.onClickConversationItem(conversationInfo);
             });
         } else {
             itemView.setOnClickListener(viewHolder::onClick);
@@ -133,87 +131,81 @@ public class ConversationListAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (!viewHolderClazz.isAnnotationPresent(EnableContextMenu.class)) {
             return;
         }
-        View.OnLongClickListener listener = new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Method[] allMethods = viewHolderClazz.getDeclaredMethods();
-                List<ContextMenuItemWrapper> contextMenus = new ArrayList<>();
-                for (final Method method : allMethods) {
-                    if (method.isAnnotationPresent(ConversationContextMenuItem.class)) {
-                        contextMenus.add(new ContextMenuItemWrapper(method.getAnnotation(ConversationContextMenuItem.class), method));
-                    }
+        View.OnLongClickListener listener = v -> {
+            Method[] allMethods = viewHolderClazz.getDeclaredMethods();
+            List<ContextMenuItemWrapper> contextMenus = new ArrayList<>();
+            for (final Method method : allMethods) {
+                if (method.isAnnotationPresent(ConversationContextMenuItem.class)) {
+                    contextMenus.add(new ContextMenuItemWrapper(method.getAnnotation(ConversationContextMenuItem.class), method));
                 }
-                // handle annotated method in ConversationViewHolder
-                allMethods = ConversationViewHolder.class.getDeclaredMethods();
-                for (final Method method : allMethods) {
-                    if (method.isAnnotationPresent(ConversationContextMenuItem.class)) {
-                        contextMenus.add(new ContextMenuItemWrapper(method.getAnnotation(ConversationContextMenuItem.class), method));
-                    }
-                }
-
-                if (contextMenus.isEmpty()) {
-                    return false;
-                }
-
-                int position = viewHolder.getAdapterPosition();
-                ConversationInfo conversationInfo = conversationInfos.get(position - headerCount());
-                Iterator<ContextMenuItemWrapper> iterator = contextMenus.iterator();
-                ConversationContextMenuItem item;
-                while (iterator.hasNext()) {
-                    item = iterator.next().contextMenuItem;
-                    if (viewHolder.contextMenuItemFilter(conversationInfo, item.tag())) {
-                        iterator.remove();
-                    }
-                }
-
-                if (contextMenus.isEmpty()) {
-                    return false;
-                }
-                Collections.sort(contextMenus, (o1, o2) -> o1.contextMenuItem.priority() - o2.contextMenuItem.priority());
-                List<String> titles = new ArrayList<>(contextMenus.size());
-                for (ContextMenuItemWrapper itemWrapper : contextMenus) {
-                    titles.add(viewHolder.contextMenuTitle(fragment.getContext(), itemWrapper.contextMenuItem.tag()));
-                }
-                new MaterialDialog.Builder(fragment.getContext()).items(titles).itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View v, int position, CharSequence text) {
-                        try {
-                            ContextMenuItemWrapper menuItem = contextMenus.get(position);
-                            if (menuItem.contextMenuItem.confirm()) {
-                                String content;
-                                content = viewHolder.contextConfirmPrompt(fragment.getContext(), menuItem.contextMenuItem.tag());
-                                new MaterialDialog.Builder(fragment.getActivity())
-                                    .content(content)
-                                    .negativeText("取消")
-                                    .positiveText("确认")
-                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                        @Override
-                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                            try {
-                                                menuItem.method.invoke(viewHolder, itemView, conversationInfo);
-                                            } catch (IllegalAccessException e) {
-                                                e.printStackTrace();
-                                            } catch (InvocationTargetException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    })
-                                    .build()
-                                    .show();
-
-                            } else {
-                                contextMenus.get(position).method.invoke(viewHolder, itemView, conversationInfo);
-                            }
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        } catch (InvocationTargetException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }).show();
-                return true;
             }
+            // handle annotated method in ConversationViewHolder
+            allMethods = ConversationViewHolder.class.getDeclaredMethods();
+            for (final Method method : allMethods) {
+                if (method.isAnnotationPresent(ConversationContextMenuItem.class)) {
+                    contextMenus.add(new ContextMenuItemWrapper(method.getAnnotation(ConversationContextMenuItem.class), method));
+                }
+            }
+
+            if (contextMenus.isEmpty()) {
+                return false;
+            }
+
+            int position = viewHolder.getAdapterPosition();
+            ConversationInfo conversationInfo = conversationInfos.get(position - headerCount());
+            Iterator<ContextMenuItemWrapper> iterator = contextMenus.iterator();
+            ConversationContextMenuItem item;
+            while (iterator.hasNext()) {
+                item = iterator.next().contextMenuItem;
+                if (viewHolder.contextMenuItemFilter(conversationInfo, item.tag())) {
+                    iterator.remove();
+                }
+            }
+
+            if (contextMenus.isEmpty()) {
+                return false;
+            }
+            Collections.sort(contextMenus, Comparator.comparingInt(o -> o.contextMenuItem.priority()));
+            List<String> titles = new ArrayList<>(contextMenus.size());
+            for (ContextMenuItemWrapper itemWrapper : contextMenus) {
+                titles.add(viewHolder.contextMenuTitle(fragment.getContext(), itemWrapper.contextMenuItem.tag()));
+            }
+            new MaterialDialog.Builder(fragment.getContext()).items(titles).itemsCallback((dialog, v1, position1, text) -> {
+                try {
+                    ContextMenuItemWrapper menuItem = contextMenus.get(position1);
+                    if (menuItem.contextMenuItem.confirm()) {
+                        String content;
+                        content = viewHolder.contextConfirmPrompt(fragment.getContext(), menuItem.contextMenuItem.tag());
+                        new MaterialDialog.Builder(fragment.getActivity())
+                            .content(content)
+                            .negativeText("取消")
+                            .positiveText("确认")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    try {
+                                        menuItem.method.invoke(viewHolder, itemView, conversationInfo);
+                                    } catch (IllegalAccessException e) {
+                                        e.printStackTrace();
+                                    } catch (InvocationTargetException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            })
+                            .build()
+                            .show();
+
+                    } else {
+                        contextMenus.get(position1).method.invoke(viewHolder, itemView, conversationInfo);
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+            }).show();
+            return true;
         };
         itemView.setOnLongClickListener(listener);
     }

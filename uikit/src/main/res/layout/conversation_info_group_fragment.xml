@@ -47,6 +47,7 @@
                 android:gravity="center"
                 android:text="查看全部成员"
                 android:textSize="15sp"
+                tools:visibility="visible"
                 android:visibility="gone" />
 
             <LinearLayout

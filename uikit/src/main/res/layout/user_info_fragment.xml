@@ -238,11 +238,9 @@
 
     </FrameLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/style_common_btn"
         android:id="@+id/inviteButton"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
         android:background="@color/white"

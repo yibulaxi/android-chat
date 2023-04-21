@@ -15,10 +15,10 @@
         android:layout_weight="1"
         android:text="wfc、666等的通话" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/style_common_btn"
         android:id="@+id/joinButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="加入" />
 
 </LinearLayout>

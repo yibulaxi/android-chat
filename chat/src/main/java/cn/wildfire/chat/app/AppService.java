@@ -669,7 +669,7 @@ public class AppService implements AppServiceProvider {
 
     @Override
     public void getFavConferences(FavConferenceCallback callback) {
-        OKHttpHelper.post(AppServiceUrl.CONFERENCE_FAVORITE_LSIT, null, new SimpleCallback<List<ConferenceInfo>>() {
+        OKHttpHelper.post(AppServiceUrl.CONFERENCE_FAVORITE_LIST, null, new SimpleCallback<List<ConferenceInfo>>() {
             @Override
             public void onUiSuccess(List<ConferenceInfo> favConferences) {
                 if (callback != null) {

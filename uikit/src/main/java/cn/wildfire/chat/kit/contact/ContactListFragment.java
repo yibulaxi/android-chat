@@ -73,36 +73,6 @@ public class ContactListFragment extends BaseUserListFragment implements QuickIn
                 userInfos.removeIf(uiUserInfo -> filterUserList.indexOf(uiUserInfo.getUserInfo().uid) > -1);
             }
             patchUserOnlineState(userInfos);
-
-            // 添加测试数据，后期需要服务器替换真实数据
-            UserInfo user1 = new UserInfo();
-            user1.uid = "FireRobot";
-            user1.displayName = "1号机器人";
-            user1.portrait = "https://t8.baidu.com/it/u=3652736998,1115800645&fm=193";
-            UIUserInfo robot1 = new UIUserInfo(user1);
-            userInfos.add(0, robot1);
-
-            UserInfo user2 = new UserInfo();
-            user2.uid = "FireRobot";
-            user2.displayName = "2号机器人";
-            user2.portrait = "https://t8.baidu.com/it/u=3652736998,1115800645&fm=193";
-            UIUserInfo robot2 = new UIUserInfo(user2);
-            userInfos.add(1, robot2);
-
-            UserInfo user3 = new UserInfo();
-            user3.uid = "FireRobot";
-            user3.displayName = "3号机器人";
-            user3.portrait = "https://t8.baidu.com/it/u=3652736998,1115800645&fm=193";
-            UIUserInfo robot3 = new UIUserInfo(user3);
-            userInfos.add(2, robot3);
-
-            UserInfo user4 = new UserInfo();
-            user4.uid = "FireRobot";
-            user4.displayName = "4号机器人";
-            user4.portrait = "https://t8.baidu.com/it/u=3652736998,1115800645&fm=193";
-            UIUserInfo robot4 = new UIUserInfo(user4);
-            userInfos.add(3, robot4);
-
             userListAdapter.setUsers(userInfos);
         });
         contactViewModel.friendRequestUpdatedLiveData().observe(getActivity(), integer -> userListAdapter.updateHeader(0, new FriendRequestValue(integer)));

@@ -12,8 +12,8 @@ public class AppServiceUrl {
      * <br>
      * <br>
      */
-//    public static String IP = "103.151.229.106";
-    public static String IP = "wildfirechat.net";
+    public static String IP = "103.151.229.106";
+//    public static String IP = "wildfirechat.net";
     public static String HOST = "http://" + IP + ":8888";
 
     public static String Login_PWD = HOST + "/login_pwd";
@@ -46,7 +46,7 @@ public class AppServiceUrl {
     public static String CONFERENCE_FAVORITE = HOST + "/conference/fav/%s";
     public static String CONFERENCE_FAVORITE_NOT = HOST + "/conference/unfav/%s";
     public static String CONFERENCE_FAVORITE_IS = HOST + "/conference/is_fav/%s";
-    public static String CONFERENCE_FAVORITE_LSIT = HOST + "/conference/fav_conferences";
+    public static String CONFERENCE_FAVORITE_LIST = HOST + "/conference/fav_conferences";
 
     public static String CONFERENCE_RECORDING = HOST + "/conference/recording/%s";
     public static String CONFERENCE_FOCUS = HOST + "/conference/focus/%s";

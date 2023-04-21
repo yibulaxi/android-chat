@@ -137,9 +137,6 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return viewHolder;
     }
 
-    private void processOnLongClick(RecyclerView.ViewHolder viewHolder) {
-        // not implement yet
-    }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -203,11 +200,6 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyItemInserted(headerCount() + userCount() + favUserCount() + footerCount);
     }
 
-    public void updateFooter(int index, FooterValue value) {
-        FooterValueWrapper wrapper = footerValues.get(index);
-        footerValues.set(index, new FooterValueWrapper(wrapper.footerViewHolderClazz, wrapper.layoutResId, value));
-        notifyItemChanged(headerCount() + userCount() + favUserCount() + index);
-    }
 
     public int headerCount() {
         return headerValues == null ? 0 : headerValues.size();

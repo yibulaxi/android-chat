@@ -125,6 +125,7 @@ public class SMSLoginActivity extends WfcBaseNoToolbarActivity {
                     .putString("id", loginResult.getUserId())
                     .putString("token", loginResult.getToken())
                     .apply();
+
                 Intent intent = new Intent(SMSLoginActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

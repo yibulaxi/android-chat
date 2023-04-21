@@ -2706,7 +2706,7 @@ public class ChatManager {
             List<ConversationInfo> convs = new ArrayList<>();
             mClient.getConversationListAsync(intypes, inlines, new IGetConversationListCallback.Stub() {
                 @Override
-                public void onSuccess(List<ConversationInfo> infos, boolean hasMore) throws RemoteException {
+                public void onSuccess(List<ConversationInfo> infos, boolean hasMore) {
                     convs.addAll(infos);
                     if (!hasMore) {
                         mainHandler.post(() -> {
@@ -2716,7 +2716,7 @@ public class ChatManager {
                 }
 
                 @Override
-                public void onFailure(int errorCode) throws RemoteException {
+                public void onFailure(int errorCode) {
                     mainHandler.post(() -> callback.onFail(errorCode));
                 }
             });

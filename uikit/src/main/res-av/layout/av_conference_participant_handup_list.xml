@@ -24,9 +24,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/style_common_btn"
             android:layout_margin="10dp"
             android:text="全部放下" />
 

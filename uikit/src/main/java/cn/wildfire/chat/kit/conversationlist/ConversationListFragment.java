@@ -99,31 +99,20 @@ public class ConversationListFragment extends ProgressFragment {
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
 
         UserViewModel userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-        userViewModel.userInfoLiveData().observe(this, new Observer<List<UserInfo>>() {
-            @Override
-            public void onChanged(List<UserInfo> userInfos) {
-                int start = layoutManager.findFirstVisibleItemPosition();
-                int end = layoutManager.findLastVisibleItemPosition();
-                adapter.notifyItemRangeChanged(start, end - start + 1);
-            }
+        userViewModel.userInfoLiveData().observe(this, userInfos -> {
+            int start = layoutManager.findFirstVisibleItemPosition();
+            int end = layoutManager.findLastVisibleItemPosition();
+            adapter.notifyItemRangeChanged(start, end - start + 1);
         });
         GroupViewModel groupViewModel = ViewModelProviders.of(this).get(GroupViewModel.class);
-        groupViewModel.groupInfoUpdateLiveData().observe(this, new Observer<List<GroupInfo>>() {
-            @Override
-            public void onChanged(List<GroupInfo> groupInfos) {
-                int start = layoutManager.findFirstVisibleItemPosition();
-                int end = layoutManager.findLastVisibleItemPosition();
-                adapter.notifyItemRangeChanged(start, end - start + 1);
-            }
+        groupViewModel.groupInfoUpdateLiveData().observe(this, groupInfos -> {
+            int start = layoutManager.findFirstVisibleItemPosition();
+            int end = layoutManager.findLastVisibleItemPosition();
+            adapter.notifyItemRangeChanged(start, end - start + 1);
         });
 
         statusNotificationViewModel = WfcUIKit.getAppScopeViewModel(StatusNotificationViewModel.class);
-        statusNotificationViewModel.statusNotificationLiveData().observe(this, new Observer<Object>() {
-            @Override
-            public void onChanged(Object o) {
-                adapter.updateStatusNotification(statusNotificationViewModel.getNotificationItems());
-            }
-        });
+        statusNotificationViewModel.statusNotificationLiveData().observe(this, o -> adapter.updateStatusNotification(statusNotificationViewModel.getNotificationItems()));
         conversationListViewModel.connectionStatusLiveData().observe(this, status -> {
             ConnectionStatusNotification connectionStatusNotification = new ConnectionStatusNotification();
             switch (status) {

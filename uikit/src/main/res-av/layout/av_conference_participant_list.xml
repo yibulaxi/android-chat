@@ -32,7 +32,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/style_common_btn"
             android:id="@+id/muteAllButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -40,7 +41,8 @@
             android:layout_weight="1"
             android:text="全员静音" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/style_common_btn"
             android:id="@+id/unmuteAllButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
