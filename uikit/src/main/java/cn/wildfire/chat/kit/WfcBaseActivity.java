@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -28,10 +29,12 @@ import androidx.core.content.ContextCompat;
 public abstract class WfcBaseActivity extends AppCompatActivity {
     Toolbar toolbar;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         beforeViews();
         setContentView(contentLayout());
         bindViews();
@@ -62,18 +65,12 @@ public abstract class WfcBaseActivity extends AppCompatActivity {
      * @param darkTheme 和toolbar.xml里面的 app:theme="@style/AppTheme.DarkAppbar" 相关
      */
     private void customToolbarAndStatusBarBackgroundColor(boolean darkTheme) {
-        int toolbarBackgroundColorResId = darkTheme ? R.color.colorPrimary : R.color.gray5;
+        int toolbarBackgroundColorResId = R.color.transparent;
         Drawable drawable = getResources().getDrawable(R.mipmap.ic_back);
-        if (darkTheme) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                drawable.setTint(Color.WHITE);
-            }
-            toolbar.setTitleTextColor(Color.WHITE);
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                drawable.setTintList(null);
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            drawable.setTint(Color.WHITE);
         }
+        toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setHomeAsUpIndicator(drawable);
         if (showHomeMenuItem()) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

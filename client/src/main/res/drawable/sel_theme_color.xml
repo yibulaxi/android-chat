@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--按钮可点击样式-->
+
+    <gradient
+        android:endColor="#2c98c6"
+        android:startColor="#9638c8" />
+</shape>
